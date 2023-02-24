@@ -15,9 +15,13 @@ Your WSL system will be somewhat separated from the rest of your Windows system,
 A lot of the labs involve interacting with the Downloads folder on your computer (e.g. to get the PEM files for SSH). Your browswer will usually download everything by default to your Downloads folder in Windows. Instead of nagivating to this folder from your Linux home everytime you want to do something, we can set up a symbolic link to the Windows Downloads folder in our Linux home directory. The command is `ln -s <path_to_windows_downloads_folder> <name_for_link>`. Depending on the exact path to the Windows folder, the full command might look something like this: `ln -s /mnt/c/Users/<your_username>/Downloads Downloads`. Now you should have a file in your home folder that allows you to access your Downloads folder in Windows as if it was a direct subfolder. You can link other folders you might want to access easily like your Desktop or Documents as well.
 
 ### Fixing Permissions
-We often have to change the permissions of files before we do something. For example, we make `ssh` PEM files read-only before we can use them, and we need to make scripts executable before we can run them. You might be having issues changing permissions of files with `chmod` in WSL. To fix this, add the following lines to your `/etc/wsl.conf` file (if it doesn't exist then create it). You might have have to use `sudo` to be able to modify files in `/etc`.
+We often have to change the permissions of files before we do something. For example, we make `ssh` PEM files read-only before we can use them, and we need to make scripts executable before we can run them. You might be having issues changing permissions of some files with `chmod` in WSL since the permissions system in Windows is different from Linux. To fix this, add the following lines to your `/etc/wsl.conf` file (if it doesn't exist then create it). You might have have to use `sudo` to be able to modify files in `/etc`. This should allow Windows files to behave as if they have Linux permissions.
 ```
 [automount]
 options = "metadata"
 ```
 After this, you might need to restart your machine for the new settings to apply.
+
+### Fixing VSCode
+On the bottom blue bar of VSCode, there should be a section that says either `LF` or `CRLF`, which stands for either line feed or carriage return line feed. On Linux and macOS, the default setting should be `LF`. On Windows, the default setting might be `CRLF`, which adds a special character called a carriage return at the end of lines. This will cause issues when trying to run bash scripts written with VSCode.
+(Note that if you use command line based editors from the WSL terminal, like `nano` or `vi`, then Unix line endings will be used and you will be able to run them without any issue as long as they are executable). To change the setting, click on the `CLRF` button and change it to `LF`.
