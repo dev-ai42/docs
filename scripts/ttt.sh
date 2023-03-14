@@ -111,7 +111,7 @@ function player_place(){
     b[$val]=$1
 }
 
-echo "Welcome to Tic Tac Toe!"
+echo "Welcome to Tic Tac Toe! "
 echo "Would you like to play X or O?"
 read player
 player=$(echo $player | tr 'a-z' 'A-Z')
