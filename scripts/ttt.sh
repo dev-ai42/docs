@@ -25,28 +25,20 @@ function computer_place(){
 }
 
 function isWinRows(){
-    if [ "${b[0]}" = "$1" ] && [ "${b[1]}" = "$1" ] && [ "${b[2]}" = "$1" ]; then 
-        true; return
-    fi
-    if [ "${b[3]}" = "$1" ] && [ "${b[4]}" = "$1" ] && [ "${b[5]}" = "$1" ]; then 
-        true; return
-    fi
-    if [ "${b[6]}" = "$1" ] && [ "${b[7]}" = "$1" ] && [ "${b[8]}" = "$1" ]; then 
-        true; return
-    fi 
+    for i in {0,3,6}; do
+        if [ "${b[$i]}" = "$1" ] && [ "${b[$(i+1)]}" = "$1" ] && [ "${b[$(i+2)]}" = "$1" ]; then
+            true; return
+        fi
+    done
     false
 }
 
 function isWinCols(){
-    if [ "${b[0]}" = "$1" ] && [ "${b[3]}" = "$1" ] && [ "${b[6]}" = "$1" ]; then 
-        true; return
-    fi
-    if [ "${b[1]}" = "$1" ] && [ "${b[4]}" = "$1" ] && [ "${b[7]}" = "$1" ]; then 
-        true; return
-    fi
-    if [ "${b[2]}" = "$1" ] && [ "${b[5]}" = "$1" ] && [ "${b[8]}" = "$1" ]; then 
-        true; return
-    fi 
+    for i in {0,1,2}; do
+        if [ "${b[$i]}" = "$1" ] && [ "${b[$(i+3)]}" = "$1" ] && [ "${b[$(i+6)]}" = "$1" ]; then
+            true; return
+        fi
+    done
     false
 }
 
@@ -137,7 +129,6 @@ echo "For example the center square is B2."
 echo
 
 game_state="running"
-winner=""
 
 if [ $player = 'X' ]; then
     print_board
@@ -146,10 +137,9 @@ fi
 
 while [ $game_state = "running" ]; do 
     computer_place $computer
-    print_board
+    clear; print_board
     if isWin $computer; then
-        game_state="won"
-        winner="computer"
+        game_state="loss"
         break
     fi
     if isDraw; then
@@ -161,11 +151,20 @@ while [ $game_state = "running" ]; do
     print_board
     if isWin $player ; then
         game_state="won"
-        winner="player"
+        clear; print_board
         break
     fi
     if isDraw; then
+        game_state="draw"
+        clear; print_board
         break
     fi;
 done
 
+if [ $game_state = "draw" ]; then
+    echo "Draw!"
+elif [ $game_state = "won" ]; then
+    echo "You won!"
+elif [ $agame_state = "loss" ]; then
+    echo "You lost :("
+fi
