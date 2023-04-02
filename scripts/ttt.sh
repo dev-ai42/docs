@@ -26,7 +26,7 @@ function computer_place(){
 
 function isWinRows(){
     for i in {0,3,6}; do
-        if [ "${b[$i]}" = "$1" ] && [ "${b[$(i+1)]}" = "$1" ] && [ "${b[$(i+2)]}" = "$1" ]; then
+        if [ "${b[$i]}" = "$1" ] && [ "${b[$((i+1))]}" = "$1" ] && [ "${b[$((i+2))]}" = "$1" ]; then
             true; return
         fi
     done
@@ -35,7 +35,7 @@ function isWinRows(){
 
 function isWinCols(){
     for i in {0,1,2}; do
-        if [ "${b[$i]}" = "$1" ] && [ "${b[$(i+3)]}" = "$1" ] && [ "${b[$(i+6)]}" = "$1" ]; then
+        if [ "${b[$i]}" = "$1" ] && [ "${b[$((i+3))]}" = "$1" ] && [ "${b[$((i+6))]}" = "$1" ]; then
             true; return
         fi
     done
@@ -148,7 +148,6 @@ while [ $game_state = "running" ]; do
     fi;
 
     player_place $player
-    print_board
     if isWin $player ; then
         game_state="won"
         clear; print_board
@@ -161,10 +160,10 @@ while [ $game_state = "running" ]; do
     fi;
 done
 
-if [ $game_state = "draw" ]; then
+if [ "$game_state" = "draw" ]; then
     echo "Draw!"
-elif [ $game_state = "won" ]; then
+elif [ "$game_state" = "won" ]; then
     echo "You won!"
-elif [ $agame_state = "loss" ]; then
+elif [ "$game_state" = "loss" ]; then
     echo "You lost :("
 fi
